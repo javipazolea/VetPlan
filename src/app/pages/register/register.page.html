@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/login">
+        <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Registrarse</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form>
+    <div class="form-group">
+      <ion-label><ion-icon name="person-outline" slot="start"></ion-icon>Nombre</ion-label>
+      <ion-input [(ngModel)]="name" name="name" (ionInput)="validateName()"></ion-input>
+      <div class="error-message" *ngIf="nameError">
+        {{ nameError }}
+      </div>
+    </div>
+    <div class="form-group">
+      <ion-label><ion-icon name="mail-outline" slot="start"></ion-icon>Correo</ion-label>
+      <ion-input [(ngModel)]="email" name="email" type="email" (ionInput)="validateEmail()"></ion-input>
+      <div class="error-message" *ngIf="emailError">
+        {{ emailError }}
+      </div>
+    </div>
+    <div class="form-group">
+      <ion-label><ion-icon name="lock-closed-outline" slot="start"></ion-icon>Contraseña</ion-label>
+      <ion-input [(ngModel)]="password" name="password" type="password" (ionInput)="validatePassword()"></ion-input>
+      <div class="error-message" *ngIf="passwordError">
+        {{ passwordError }}
+      </div>
+    </div>
+    <ion-button expand="block" (click)="register()" [disabled]="!isFormValid()" class="register-button">
+      Registrarse
+    </ion-button>
+  </form>
+</ion-content>

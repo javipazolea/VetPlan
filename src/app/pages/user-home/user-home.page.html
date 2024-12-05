@@ -1,0 +1,127 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>V E T P L A N</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline" color="danger"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="welcome-container">
+    <h2 class="welcome-message" *ngIf="userName !== 'Usuario'">
+      Bienvenido, {{userName}}
+    </h2>
+    <h2 class="welcome-message" *ngIf="userName === 'Usuario'">
+      <ion-skeleton-text [animated]="true" style="width: 60%"></ion-skeleton-text>
+    </h2>
+  </div>
+
+  <!-- Sistema de pestañas -->
+  <ion-segment [(ngModel)]="segmentValue" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="calendario">
+      <ion-label>Calendario</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="citas">
+      <ion-label>Mis Citas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="mascotas">
+      <ion-label>Mis Mascotas</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Vista de Calendario -->
+  <div *ngIf="segmentValue === 'calendario'" class="ion-padding">
+    <ion-datetime [value]="selectedDate" (ionChange)="onDateChanged($event)" [disabled]="false" presentation="date"
+      locale="es-ES">
+    </ion-datetime>
+
+    <div class="citas-dia">
+      <h2 class="ion-padding">Citas del día {{ selectedDate | date:'dd/MM/yyyy' }}</h2>
+      <ion-list>
+        <ion-item *ngFor="let cita of citasDelDia">
+          <ion-label>
+            <h2>{{ cita.fecha | date:'HH:mm' }} - {{ getMascotaInfo(cita.mascotaId)?.nombre }}</h2>
+            <p>Motivo: {{ cita.motivo }}</p>
+            <p>Estado: {{ cita.estado }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-text color="medium" class="ion-text-center" *ngIf="citasDelDia.length === 0">
+        <p>No hay citas programadas para este día</p>
+      </ion-text>
+    </div>
+  </div>
+
+  <!-- Vista de Citas -->
+  <div *ngIf="segmentValue === 'citas'">
+    <ion-list>
+      <ion-item-sliding *ngFor="let cita of misCitas">
+        <ion-item>
+          <ion-label>
+            <h2>Fecha: {{cita.fecha | date:'dd/MM/yyyy HH:mm'}}</h2>
+            <h3>Mascota: {{getMascotaInfo(cita.mascotaId)?.nombre}}</h3>
+            <p>Motivo: {{cita.motivo}}</p>
+            <p>Estado: {{cita.estado}}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="primary" (click)="editarCita(cita)">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="eliminarCita(cita)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <ion-text color="medium" class="ion-text-center" *ngIf="misCitas.length === 0">
+      <p>No tienes citas programadas</p>
+    </ion-text>
+
+    <!-- Botón FAB para nueva cita -->
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="segmentValue === 'citas'">
+      <ion-fab-button (click)="abrirModalNuevaCita()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+  <!-- Vista de Mascotas (Manteniendo la funcionalidad existente) -->
+  <div *ngIf="segmentValue === 'mascotas'">
+    <div *ngIf="mascotas.length > 0">
+      <ion-list>
+        <ion-item-sliding *ngFor="let mascota of mascotas">
+          <ion-item>
+            <ion-label>
+              <h2>{{mascota.nombre}}</h2>
+              <p>- {{mascota.especie}}</p>
+              <p>Edad: {{mascota.edad}} años</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item-options side="end">
+            <ion-item-option color="primary" (click)="abrirModalEdicion(mascota)">
+              <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+            </ion-item-option>
+            <ion-item-option color="danger" (click)="eliminarMascota(mascota)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </div>
+
+    <ion-text color="medium" class="ion-text-center" *ngIf="mascotas.length === 0">
+      <p>No tienes mascotas registradas</p>
+    </ion-text>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="segmentValue === 'mascotas'">
+      <ion-fab-button routerLink="/agregar-mascota">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+</ion-content>

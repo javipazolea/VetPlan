@@ -1,0 +1,64 @@
+<!-- src/app/components/nueva-cita-modal/nueva-cita-modal.component.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nueva Cita</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form>
+    <ion-item>
+      <ion-label position="stacked">Veterinario</ion-label>
+      <ion-select [(ngModel)]="nuevaCita.veterinarioId" name="veterinario" (ionChange)="verificarDisponibilidad()">
+        <ion-select-option *ngFor="let vet of veterinarios" [value]="vet.id">
+          {{vet.nombre}} - {{vet.email}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Mascota</ion-label>
+      <ion-select [(ngModel)]="nuevaCita.mascotaId" name="mascota">
+        <ion-select-option *ngFor="let mascota of mascotas" [value]="mascota.id">
+          {{mascota.nombre}} - {{mascota.especie}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-datetime [(ngModel)]="nuevaCita.fecha" name="fecha" [min]="minDate" [max]="maxDate.toISOString()"
+        (ionChange)="verificarDisponibilidad()" presentation="date" locale="es-ES">
+      </ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Hora</ion-label>
+      <ion-select [(ngModel)]="nuevaCita.hora" name="hora">
+        <ion-select-option *ngFor="let hora of horasDisponibles" [value]="hora">
+          {{hora}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Motivo de la consulta</ion-label>
+      <ion-textarea [(ngModel)]="nuevaCita.motivo" name="motivo" rows="3"
+        placeholder="Describe el motivo de la consulta">
+      </ion-textarea>
+    </ion-item>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" (click)="guardarCita()" [disabled]="!validarCita()">
+      Agendar Cita
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

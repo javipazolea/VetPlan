@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registrar Veterinario</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form>
+    <div class="form-group">
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [(ngModel)]="nombre" name="nombre" (ionInput)="validateNombre()"></ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="nombreError">
+        {{ nombreError }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <ion-item>
+        <ion-label position="floating">Correo</ion-label>
+        <ion-input [(ngModel)]="email" name="email" type="email" (ionInput)="validateEmail()"></ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="emailError">
+        {{ emailError }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input [(ngModel)]="password" name="password" type="password" (ionInput)="validatePassword()"></ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="passwordError">
+        {{ passwordError }}
+      </div>
+    </div>
+
+    <ion-button expand="block" (click)="registrarVeterinario()" [disabled]="!isFormValid()" class="ion-margin-top">
+      Registrar Veterinario
+    </ion-button>
+  </form>
+</ion-content>

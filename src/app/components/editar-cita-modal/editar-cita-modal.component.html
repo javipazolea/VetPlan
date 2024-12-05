@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar Cita</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form>
+    <ion-item>
+      <ion-label position="stacked">Mascota</ion-label>
+      <ion-select [(ngModel)]="editandoCita.mascotaId" name="mascota">
+        <ion-select-option *ngFor="let mascota of mascotas" [value]="mascota.id">
+          {{mascota.nombre}} - {{mascota.especie}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-datetime [(ngModel)]="editandoCita.fecha" name="fecha" [min]="minDate" [max]="maxDate.toISOString()"
+        (ionChange)="verificarDisponibilidad()" presentation="date" locale="es-ES">
+      </ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Hora</ion-label>
+      <ion-select [(ngModel)]="editandoCita.hora" name="hora">
+        <ion-select-option *ngFor="let hora of horasDisponibles" [value]="hora">
+          {{hora}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Motivo de la consulta</ion-label>
+      <ion-textarea [(ngModel)]="editandoCita.motivo" name="motivo" rows="3"
+        placeholder="Describe el motivo de la consulta">
+      </ion-textarea>
+    </ion-item>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" (click)="guardarCambios()" [disabled]="!validarCita()">
+      Guardar Cambios
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

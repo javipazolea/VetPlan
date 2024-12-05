@@ -1,0 +1,169 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Panel de Administración</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline" color="danger"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-segment [(ngModel)]="segmentValue" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="veterinarios">
+      <ion-label>Gestión Veterinarios</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="estadisticas">
+      <ion-label>Estadísticas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="sistema">
+      <ion-label>Sistema</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Vista de Gestión de Veterinarios -->
+  <div *ngIf="segmentValue === 'veterinarios'">
+    <div *ngIf="loading" class="ion-text-center ion-padding">
+      <ion-spinner></ion-spinner>
+      <p>Cargando veterinarios...</p>
+    </div>
+
+    <ion-list *ngIf="!loading">
+      <ion-item-sliding *ngFor="let veterinario of veterinarios">
+        <ion-item>
+          <ion-label>
+            <h2>{{veterinario.name}}</h2> <!-- Cambiado de nombre a name -->
+            <p>{{veterinario.email}}</p>
+            <p>
+              <ion-text color="medium">
+                Citas: {{getCitasVeterinario(veterinario.uid)}} | <!-- Cambiado de id a uid -->
+                Pacientes: {{getMascotasVeterinario(veterinario.uid)}}
+              </ion-text>
+            </p>
+          </ion-label>
+          <ion-badge slot="end" color="success">Activo</ion-badge>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="desactivarVeterinario(veterinario)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <!-- Mensaje cuando no hay veterinarios -->
+    <ion-text color="medium" class="ion-text-center ion-padding" *ngIf="!loading && veterinarios.length === 0">
+      <p>No hay veterinarios registrados</p>
+    </ion-text>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="presentRegistroVeterinario()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+  <!-- Vista de Estadísticas -->
+  <div *ngIf="segmentValue === 'estadisticas'" class="ion-padding">
+    <div *ngIf="loading" class="ion-text-center">
+      <ion-spinner></ion-spinner>
+      <p>Cargando estadísticas...</p>
+    </div>
+    <!-- Resumen General -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Resumen General</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              <div class="stat-box">
+                <ion-icon name="people"></ion-icon>
+                <h3>{{estadisticas.totalUsuarios}}</h3>
+                <p>Usuarios</p>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div class="stat-box">
+                <ion-icon name="medical"></ion-icon>
+                <h3>{{estadisticas.veterinariosActivos}}</h3>
+                <p>Veterinarios</p>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">
+              <div class="stat-box">
+                <ion-icon name="paw"></ion-icon>
+                <h3>{{estadisticas.totalMascotas}}</h3>
+                <p>Mascotas</p>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div class="stat-box">
+                <ion-icon name="calendar"></ion-icon>
+                <h3>{{estadisticas.totalCitas}}</h3>
+                <p>Citas Totales</p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Estado de Citas -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Estado de Citas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>Pendientes</ion-label>
+            <ion-badge slot="end" color="warning">{{estadisticas.citasPendientes}}</ion-badge>
+          </ion-item>
+          <ion-item>
+            <ion-label>Completadas</ion-label>
+            <ion-badge slot="end" color="success">{{estadisticas.citasCompletadas}}</ion-badge>
+          </ion-item>
+          <ion-item>
+            <ion-label>Canceladas</ion-label>
+            <ion-badge slot="end" color="danger">{{estadisticas.citasCanceladas}}</ion-badge>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Vista de Sistema -->
+  <div *ngIf="segmentValue === 'sistema'" class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Configuración del Sistema</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-icon name="time-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h2>Horario de Atención</h2>
+              <p>09:00 - 18:00</p>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+            <ion-label>
+              <h2>Último Respaldo</h2>
+              <p>{{ultimoRespaldo | date:'dd/MM/yyyy HH:mm'}}</p>
+            </ion-label>
+            <ion-button slot="end" (click)="generarRespaldo()">
+              Respaldar
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

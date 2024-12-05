@@ -1,0 +1,26 @@
+ion-item ion-icon {
+    font-size: 25px; /* Cambia el tamaño del ícono */
+    color: var(--ion-color-primary); /* Usa el color primario de tu tema */
+    margin-right: 8px; /* Ajusta el espacio entre el ícono y el texto */
+}
+.validation-errors {
+    padding: 0 16px;
+    margin-top: 5px;
+  }
+  
+  .error-message {
+    color: var(--ion-color-danger);
+    font-size: 0.8em;
+    margin-bottom: 5px;
+  }
+  
+  ion-button {
+    margin: 16px;
+  }
+  
+  ion-item {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+  }

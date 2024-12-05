@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Iniciar Sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <ion-item>
+      <ion-label mode="ios" position="floating">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>Correo
+      </ion-label>
+      <ion-input mode="ios" type="email" formControlName="email">
+      </ion-input>
+    </ion-item>
+    <!-- Mensajes de validación email -->
+    <div class="validation-errors"
+      *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
+      <div class="error-message" *ngIf="loginForm.get('email')?.errors?.['required']">
+        El correo electrónico es requerido
+      </div>
+      <div class="error-message" *ngIf="loginForm.get('email')?.errors?.['pattern']">
+        Por favor, ingrese un correo electrónico válido
+      </div>
+    </div>
+
+    <ion-item>
+      <ion-label mode="ios" position="floating">
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>Contraseña
+      </ion-label>
+      <ion-input mode="ios" type="password" formControlName="password">
+      </ion-input>
+    </ion-item>
+    <!-- Mensajes de validación password -->
+    <div class="validation-errors"
+      *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+      <div class="error-message" *ngIf="loginForm.get('password')?.errors?.['required']">
+        La contraseña es requerida
+      </div>
+      <div class="error-message" *ngIf="loginForm.get('password')?.errors?.['minlength']">
+        La contraseña debe tener al menos 6 caracteres
+      </div>
+    </div>
+
+    <ion-button mode="ios" class="ion-margin" expand="full" type="submit" [disabled]="loginForm.invalid">
+      Iniciar Sesión
+      <ion-icon name="log-in-outline" slot="end"></ion-icon>
+    </ion-button>
+
+    <ion-button mode="ios" expand="full" class="ion-margin" routerLink="/register">
+      Registrarse
+      <ion-icon name="person-add-outline" slot="end"></ion-icon>
+    </ion-button>
+
+    <ion-button mode="ios" expand="full" fill="clear" (click)="goToResetPassword()">
+      ¿Olvidaste tu contraseña?
+    </ion-button>
+  </form>
+</ion-content>

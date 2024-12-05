@@ -1,0 +1,39 @@
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item lines="none">
+      <ion-icon name="calendar" slot="start" color="primary"></ion-icon>
+      <ion-label>
+        <h2>Fecha y Hora</h2>
+        <p>{{cita.fecha | date:'dd/MM/yyyy HH:mm'}}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-icon name="paw" slot="start" color="primary"></ion-icon>
+      <ion-label>
+        <h2>Información de la Mascota</h2>
+        <p><strong>Nombre:</strong> {{mascota?.nombre}}</p>
+        <p><strong>Especie:</strong> {{mascota?.especie}}</p>
+        <p><strong>Raza:</strong> {{mascota?.raza}}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-icon name="document-text" slot="start" color="primary"></ion-icon>
+      <ion-label>
+        <h2>Detalles de la Cita</h2>
+        <p><strong>Motivo:</strong> {{cita.motivo}}</p>
+        <p><strong>Estado:</strong>
+          <ion-badge [color]="getColorEstado(cita.estado)">{{cita.estado}}</ion-badge>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="primary" (click)="cambiarEstado()">
+    Cambiar Estado
+  </ion-button>
+  <ion-button expand="block" color="medium" (click)="cerrar()">
+    Cerrar
+  </ion-button>
+</ion-content>

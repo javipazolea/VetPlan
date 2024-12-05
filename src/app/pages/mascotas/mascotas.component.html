@@ -1,0 +1,13 @@
+<div class="mascotas-list">
+  <h2>Mis Mascotas</h2>
+
+  <button (click)="addMascota()">Agregar Mascota</button>
+
+
+  <div *ngFor="let mascota of mascotas">
+    <p>{{ mascota.nombre }}</p>
+    <button (click)="editMascota(mascota.id)">Editar</button>
+    <button (click)="deleteMascota(mascota.id)">Eliminar</button>
+    <button (click)="router.navigate(['/citas', mascota.id])">Ver Citas</button>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item lines="none">
+      <ion-icon name="paw" slot="start" color="primary"></ion-icon>
+      <ion-label>
+        <h2>Información de la Mascota</h2>
+        <p><strong>Nombre:</strong> {{mascota.nombre}}</p>
+        <p><strong>Especie:</strong> {{mascota.especie}}</p>
+        <p><strong>Raza:</strong> {{mascota.raza}}</p>
+        <p><strong>Edad:</strong> {{mascota.edad}} años</p>
+        <p><strong>Fecha de Nacimiento:</strong> {{mascota.fechaNacimiento | date:'dd/MM/yyyy'}}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-icon name="calendar" slot="start" color="primary"></ion-icon>
+      <ion-label>
+        <h2>Historial de Citas</h2>
+        <ng-container *ngIf="citasMascota.length > 0; else noCitas">
+          <div *ngFor="let cita of citasMascota">
+            <p>
+              <strong>{{cita.fecha | date:'dd/MM/yyyy HH:mm'}}</strong><br>
+              Motivo: {{cita.motivo}}<br>
+              Estado: <ion-badge [color]="getColorEstado(cita.estado)">{{cita.estado}}</ion-badge>
+            </p>
+          </div>
+        </ng-container>
+        <ng-template #noCitas>
+          <p>No hay historial de citas</p>
+        </ng-template>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="medium" (click)="cerrar()">
+    Cerrar
+  </ion-button>
+</ion-content>
